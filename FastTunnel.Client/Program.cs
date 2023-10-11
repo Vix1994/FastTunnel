@@ -44,6 +44,10 @@ class Program
                   .Enrich.FromLogContext()
                   .WriteTo.Console();
             })
+            .ConfigureAppConfiguration(config =>
+            {
+                config.AddJsonFile("config/appsettings.json", optional: false, reloadOnChange: true);
+            })
             .UseWindowsService()
             .ConfigureServices((hostContext, services) =>
             {
