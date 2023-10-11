@@ -1,0 +1,24 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "v2" ]
+  pull_request:
+    branches: [ "v2" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile.Client --tag vix1994/fasttunnel-client:latest
+           
+    - name: Log in registry
+      run: echo "${{ secrets.REGISTRY_ACCESS_TOKEN }}" | docker login -u vix1994 --password-stdin
+      
+    - name: Push to registry
+      run: docker push vix1994/fasttunnel-client:latest
