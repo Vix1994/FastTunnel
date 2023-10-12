@@ -7,6 +7,7 @@
 using System;
 using FastTunnel.Core.Extensions;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
@@ -49,6 +50,10 @@ class Program
             .UseSerilog((context, services, configuration) => configuration
                     .ReadFrom.Configuration(context.Configuration)
                     .WriteTo.Console())
+            .ConfigureAppConfiguration(config =>
+            {
+                config.AddJsonFile("config/appsettings.json", optional: false, reloadOnChange: true);
+            })
             .ConfigureServices((hostContext, services) =>
             {
                 // -------------------FastTunnel START------------------
